@@ -64,6 +64,10 @@ jobs:
           fi
           echo "$SIGNING_KEY" | base64 -d > signingkey.jks
 
+      - name: Marcar nombres con el sufijo del repo
+        if: steps.list.outputs.tasks != ''
+        run: python3 .github/scripts/deus-mark.py
+
       - name: Compilar extensiones
         if: steps.list.outputs.tasks != ''
         env:

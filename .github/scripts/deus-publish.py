@@ -13,6 +13,7 @@ import json
 import os
 import shutil
 import sys
+import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -36,6 +37,31 @@ def icon_url(module: str, theme: str | None) -> str:
     candidates.append(f"core/src/main/{ICON_FILE}")
     path = next((c for c in candidates if (ROOT / c).exists()), candidates[-1])
     return f"{RAW}/{SOURCE_BRANCH}/{path}"
+
+
+KEIYOUSHI_INDEX = "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.json"
+
+
+def keiyoushi_ids() -> dict[str, set[int]]:
+    with urllib.request.urlopen(KEIYOUSHI_INDEX, timeout=60) as resp:
+        data = json.load(resp)
+    return {
+        e["packageName"]: {int(s["id"]) for s in e.get("sources", [])}
+        for e in data["extensionList"]["extensions"]
+    }
+
+
+def check_ids(extensions: list) -> None:
+    """Si el ID de una fuente cambia, la biblioteca de quien la use se pierde: mejor no publicar."""
+    upstream = keiyoushi_ids()
+    errors = []
+    for ext in extensions:
+        expected = upstream.get(ext.packageName)
+        ids = {s.id for s in ext.sources}
+        if expected is not None and ids != expected:
+            errors.append(f"{ext.name}: IDs {sorted(ids)} != Keiyoushi {sorted(expected)}")
+    if errors:
+        sys.exit("El ID de fuente no coincide con el de Keiyoushi:\n" + "\n".join(errors))
 
 
 def main() -> None:
@@ -80,6 +106,7 @@ def main() -> None:
         sys.exit("No se ha compilado ninguna extensión: revisa deus-extensions.txt")
 
     extensions.sort(key=lambda e: e.packageName)
+    check_ids(extensions)
     index = index_pb2.Index(
         name=CONFIG["name"],
         badgeLabel=CONFIG["badgeLabel"],
