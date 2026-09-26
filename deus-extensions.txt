@@ -2,3 +2,4 @@
 # Una por línea, con el formato idioma/carpeta (la carpeta de src/). Ejemplo:
 # es/barmanga
 es/leercapitulo
+all/ninemanga

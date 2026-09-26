@@ -2,5 +2,16 @@
   "name": "Deus Ex Manga",
   "badgeLabel": "DEUS",
   "nameSuffix": " (Deus)",
-  "signingKey": "943d4841ab0fb65e9fcf3271e204fd4487149e703f227de2972cc69601f3c2f2"
+  "signingKey": "943d4841ab0fb65e9fcf3271e204fd4487149e703f227de2972cc69601f3c2f2",
+  "legacyIds": {
+    "eu.kanade.tachiyomi.extension.all.ninemanga": [
+      "120391793502126753",
+      "4097111295486074350",
+      "7162569729467394726",
+      "6531002958728774729",
+      "8454920920230076882",
+      "4312023446566221911",
+      "3415116372640359218"
+    ]
+  }
 }

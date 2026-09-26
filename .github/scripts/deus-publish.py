@@ -54,9 +54,11 @@ def keiyoushi_ids() -> dict[str, set[int]]:
 def check_ids(extensions: list) -> None:
     """Si el ID de una fuente cambia, la biblioteca de quien la use se pierde: mejor no publicar."""
     upstream = keiyoushi_ids()
+    # Extensiones que Keiyoushi ya no publica (p. ej. NineManga): sus IDs se fijan en deus-repo.json.
+    legacy = {pkg: {int(i) for i in ids} for pkg, ids in CONFIG.get("legacyIds", {}).items()}
     errors = []
     for ext in extensions:
-        expected = upstream.get(ext.packageName)
+        expected = upstream.get(ext.packageName) or legacy.get(ext.packageName)
         ids = {s.id for s in ext.sources}
         if expected is not None and ids != expected:
             errors.append(f"{ext.name}: IDs {sorted(ids)} != Keiyoushi {sorted(expected)}")
