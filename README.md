@@ -1,35 +1,39 @@
-# Keiyoushi Extensions
+# Deus Ex Manga
 
-### Please give the repo a :star:
+Repositorio personal de extensiones para [Mihon](https://mihon.app), con arreglos propios para
+sitios que han cambiado de dominio o de diseño.
 
-| Build                                                                                                                                                                               | Need Help?                                                                                                                                              |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![CI](https://github.com/keiyoushi/extensions-source/actions/workflows/build_push.yml/badge.svg)](https://github.com/keiyoushi/extensions-source/actions/workflows/build_push.yml) | [![Discord](https://img.shields.io/discord/1193460528052453448.svg?label=discord&labelColor=7289da&color=2c2f33&style=flat)](https://discord.gg/3FbCpdKbdY) |
+Es una versión modificada de [keiyoushi/extensions-source](https://github.com/keiyoushi/extensions-source).
+Todo el mérito del código base es de sus colaboradores. **No es un repositorio oficial de Keiyoushi**:
+no reportes a Keiyoushi los fallos de estas extensiones.
 
-## Usage
-**If you are new to repository/extensions, please read the [Keiyoushi Getting Started guide](https://keiyoushi.github.io/docs/guides/getting-started#adding-the-extension-repo) first.**
+## Cómo añadirlo a Mihon
 
-* You can add our repo by visiting the [Keiyoushi Website](https://keiyoushi.github.io/add-repo)
-* Otherwise, copy & paste the following URL: https://github.com/keiyoushi/extensions/raw/repo/index.pb
+1. En Mihon: **Más → Ajustes → Explorar → Repositorios de extensiones → Añadir**.
+2. Pega esta URL:
 
-## Requests
+   ```
+   https://github.com/DeusEnd-DEV/deus-ex-manga/raw/repo/index.pb
+   ```
 
-To request a new source or bug fix, [create an issue](https://github.com/keiyoushi/extensions-source/issues/new/choose).
+3. En **Explorar → Extensiones** aparecerán las extensiones de este repo con la etiqueta `DEUS`.
 
-Please note that creating an issue does not mean that the source will be added or fixed in a timely
-fashion, because the work is volunteer-based. Some sources may also be impossible to do or prohibitively
-difficult to maintain.
+### Si ya tenías la extensión oficial
 
-If you would like to see a request fulfilled and have the necessary skills to do so, consider contributing!
-Issues are up-for-grabs for any developer if there is no assigned user already.
+Las extensiones de aquí sustituyen a las de Keiyoushi con el mismo nombre. Android no permite
+instalar una encima de la otra (están firmadas por distinto autor), así que:
 
-## Contributing
+1. Desinstala la extensión oficial (tu biblioteca **no** se borra).
+2. Instala la de este repo.
+3. Tus mangas vuelven a aparecer tal cual, con su progreso.
 
-Contributions are welcome!
+Para volver a la oficial, haz lo mismo al revés.
 
-Check out the repo's [issue backlog](https://github.com/keiyoushi/extensions-source/issues) for source requests and bug reports.
+## Extensiones incluidas
 
-## License
+La lista está en [`deus-extensions.txt`](deus-extensions.txt).
+
+## Licencia
 
     Copyright 2015 Javier Tomás
 
@@ -45,9 +49,9 @@ Check out the repo's [issue backlog](https://github.com/keiyoushi/extensions-sou
     See the License for the specific language governing permissions and
     limitations under the License.
 
-## Disclaimer
+Los archivos modificados respecto al original quedan registrados en el historial de commits.
 
-This project does not have any affiliation with the content providers available.
+## Aviso
 
-This project is not affiliated with Mihon/Tachiyomi. Don't ask for help about these extensions at the
-official support means of Mihon/Tachiyomi. All credits to the codebase goes to the original contributors.
+Este proyecto no tiene relación con los sitios de contenido a los que acceden las extensiones, ni
+con Mihon/Tachiyomi ni con Keiyoushi. No pidas ayuda sobre estas extensiones en sus canales oficiales.

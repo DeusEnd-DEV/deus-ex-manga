@@ -1,0 +1,100 @@
+name: Publicar repo Deus Ex Manga
+
+# Compila las extensiones de deus-extensions.txt, las firma con la clave propia
+# y publica el índice para Mihon en la rama `repo`.
+
+on:
+  push:
+    branches:
+      - deus
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deus-repo
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Compilar y publicar
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Leer lista de extensiones
+        id: list
+        run: |
+          TASKS=""
+          while IFS= read -r line || [ -n "$line" ]; do
+            line="${line%%#*}"
+            line="$(echo "$line" | tr -d '[:space:]')"
+            [ -z "$line" ] && continue
+            TASKS="$TASKS :src:${line/\//:}:assembleRelease"
+          done < deus-extensions.txt
+          if [ -z "$TASKS" ]; then
+            echo "::notice::deus-extensions.txt está vacío: no hay nada que publicar"
+          fi
+          echo "tasks=$TASKS" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Java
+        if: steps.list.outputs.tasks != ''
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          java-version: 25
+          distribution: temurin
+
+      - name: Set up Gradle
+        if: steps.list.outputs.tasks != ''
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
+
+      - name: Preparar clave de firma
+        if: steps.list.outputs.tasks != ''
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: |
+          if [ -z "$SIGNING_KEY" ]; then
+            echo "::error::Falta el secreto SIGNING_KEY (Settings → Secrets and variables → Actions)"
+            exit 1
+          fi
+          echo "$SIGNING_KEY" | base64 -d > signingkey.jks
+
+      - name: Compilar extensiones
+        if: steps.list.outputs.tasks != ''
+        env:
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          TASKS: ${{ steps.list.outputs.tasks }}
+        run: |
+          echo "Compilando:$TASKS"
+          # shellcheck disable=SC2086
+          ./gradlew $TASKS
+
+      - name: Borrar clave de firma
+        if: always()
+        run: rm -f signingkey.jks
+
+      - name: Generar índice
+        if: steps.list.outputs.tasks != ''
+        run: |
+          pip install protobuf
+          python3 .github/scripts/deus-publish.py "$RUNNER_TEMP/repo"
+
+      - name: Publicar rama repo
+        if: steps.list.outputs.tasks != ''
+        working-directory: ${{ runner.temp }}/repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git init -q -b repo
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -q -m "Publicar extensiones (${GITHUB_SHA::7})"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" repo
