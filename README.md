@@ -29,6 +29,16 @@ instalar una encima de la otra (están firmadas por distinto autor), así que:
 
 Para volver a la oficial, haz lo mismo al revés.
 
+### Aviso de Google Play Protect
+
+Al instalar o actualizar una extensión, Play Protect puede avisar de que es una "app desconocida".
+Es normal: se instala fuera de Google Play y está firmada por un autor que Google aún no conoce.
+Pulsa **Más detalles → Instalar de todas formas**. Si pregunta si quieres enviarla para que la
+analicen, puedes aceptar.
+
+Las extensiones las compila GitHub a partir del código de este repositorio; puedes ver cada
+compilación en la pestaña [Actions](https://github.com/DeusEnd-DEV/deus-ex-manga/actions).
+
 ## Extensiones incluidas
 
 La lista está en [`deus-extensions.txt`](deus-extensions.txt).
