@@ -11,10 +11,12 @@ plugins {
 val niaddVersionCode = Regex("""versionCode\s*=\s*(\d+)""")
     .find(file("../niadd/build.gradle.kts").readText())!!.groupValues[1].toInt()
 
+// Súbelo en 1 con cada cambio propio de este módulo; los cambios de Niadd suman solos.
+val ownRevision = 1
+
 keiyoushi {
     name = "NineManga"
-    // Por encima de la última NineManga publicada (26) y sube sola cuando Keiyoushi actualiza Niadd.
-    versionCode = 100 + niaddVersionCode
+    versionCode = 1000 * ownRevision + niaddVersionCode
     contentWarning = ContentWarning.MIXED
     libVersion = "1.4"
 
@@ -63,10 +65,25 @@ keiyoushi {
     }
 }
 
+// Se compila una copia del código de Niadd sin su @Source para que la fuente sea la subclase NineManga,
+// que corrige las rutas antiguas. La copia se regenera en cada build, así hereda los cambios de Niadd.
+val niaddCopy = layout.buildDirectory.dir("generated/niadd").get().asFile
+val niaddSrc = file("../niadd/src")
+niaddCopy.deleteRecursively()
+niaddSrc.walk().filter { it.isFile && it.extension == "kt" }.forEach { source ->
+    val target = niaddCopy.resolve(source.relativeTo(niaddSrc))
+    target.parentFile.mkdirs()
+    target.writeText(
+        source.readText()
+            .replace(Regex("""@Source\s+abstract class Niadd\b"""), "abstract class Niadd")
+            .replace(Regex("""import keiyoushi\.annotation\.Source\r?\n"""), ""),
+    )
+}
+
 android {
     sourceSets {
         named("main") {
-            kotlin.directories.add("../niadd/src")
+            kotlin.directories.add(niaddCopy.path)
         }
     }
 }
