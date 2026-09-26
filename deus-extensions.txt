@@ -1,3 +1,4 @@
 # Extensiones que se compilan y publican en el repo de Deus Ex Manga.
 # Una por línea, con el formato idioma/carpeta (la carpeta de src/). Ejemplo:
 # es/barmanga
+es/leercapitulo
