@@ -23,7 +23,7 @@ import kotlin.time.Instant
 @Source
 abstract class MangaCrab : KeiSource() {
 
-    override fun getMangaUrl(manga: SManga): String = baseUrl + manga.url
+    override fun getMangaUrl(manga: SManga): String = baseUrl + manga.url.removePrefix("/inicio")
 
     private suspend fun getMangasPage(
         page: Int,
