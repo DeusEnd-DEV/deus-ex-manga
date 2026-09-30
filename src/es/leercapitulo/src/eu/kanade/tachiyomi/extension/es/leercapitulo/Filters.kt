@@ -5,9 +5,8 @@ import eu.kanade.tachiyomi.source.model.Filter
 class GenreFilter :
     UriPartFilter(
         "Género",
-        "genre",
         arrayOf(
-            Pair("<Todos>", ""),
+            Pair("<Seleccionar>", ""),
             Pair("Action", "action"),
             Pair("Adventure", "adventure"),
             Pair("Boys' Love", "boys-love"),
@@ -95,9 +94,8 @@ class GenreFilter :
 class ThemeFilter :
     UriPartFilter(
         "Temática",
-        "theme",
         arrayOf(
-            Pair("<Todas>", ""),
+            Pair("<Seleccionar>", ""),
             Pair("Aliens", "aliens"),
             Pair("Animals", "animals"),
             Pair("Cooking", "cooking"),
@@ -141,9 +139,8 @@ class ThemeFilter :
 class TypeFilter :
     UriPartFilter(
         "Tipo",
-        "type",
         arrayOf(
-            Pair("<Todos>", ""),
+            Pair("<Seleccionar>", ""),
             Pair("Manga", "manga"),
             Pair("Manhwa", "manhwa"),
             Pair("Manhua", "manhua"),
@@ -154,20 +151,18 @@ class TypeFilter :
 class StatusFilter :
     UriPartFilter(
         "Estado",
-        "status",
         arrayOf(
-            Pair("<Todos>", ""),
-            Pair("En curso", "ongoing"),
-            Pair("Completado", "completed"),
-            Pair("Pausado", "paused"),
-            Pair("Cancelado", "cancelled"),
+            Pair("<Seleccionar>", ""),
+            Pair("Completed", "completed"),
+            Pair("Ongoing", "ongoing"),
+            Pair("Paused", "paused"),
+            Pair("Cancelled", "cancelled"),
         ),
     )
 
 class SortFilter :
     UriPartFilter(
-        "Ordenar",
-        "sort",
+        "Orden",
         arrayOf(
             Pair("A - Z", "az"),
             Pair("Z - A", "za"),
@@ -176,7 +171,6 @@ class SortFilter :
 
 open class UriPartFilter(
     displayName: String,
-    val param: String,
     private val vals: Array<Pair<String, String>>,
 ) : Filter.Select<String>(
     displayName,
