@@ -1,0 +1,159 @@
+{
+  "name": "Deus Ex Manga",
+  "badgeLabel": "DEUS",
+  "signingKey": "943d4841ab0fb65e9fcf3271e204fd4487149e703f227de2972cc69601f3c2f2",
+  "contact": {
+    "website": "https://github.com/DeusEnd-DEV/deus-ex-manga"
+  },
+  "extensionList": {
+    "extensions": [
+      {
+        "name": "NineManga (Deus)",
+        "packageName": "eu.kanade.tachiyomi.extension.all.ninemanga",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-all.ninemanga-v1.6.2001.apk",
+          "iconUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/deus/src/all/ninemanga/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-all.ninemanga-v1.6.2001.jar"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "108001",
+        "versionName": "1.6.2001",
+        "contentWarning": "CONTENT_WARNING_MIXED",
+        "sources": [
+          {
+            "id": "120391793502126753",
+            "name": "NineManga",
+            "language": "en",
+            "homeUrl": "https://www.niadd.com"
+          },
+          {
+            "id": "4097111295486074350",
+            "name": "NineManga",
+            "language": "es",
+            "homeUrl": "https://es.niadd.com"
+          },
+          {
+            "id": "7162569729467394726",
+            "name": "NineManga",
+            "language": "pt-BR",
+            "homeUrl": "https://br.niadd.com"
+          },
+          {
+            "id": "6531002958728774729",
+            "name": "NineManga",
+            "language": "ru",
+            "homeUrl": "https://ru.niadd.com"
+          },
+          {
+            "id": "8454920920230076882",
+            "name": "NineManga",
+            "language": "de",
+            "homeUrl": "https://de.niadd.com"
+          },
+          {
+            "id": "4312023446566221911",
+            "name": "NineManga",
+            "language": "it",
+            "homeUrl": "https://it.niadd.com"
+          },
+          {
+            "id": "3415116372640359218",
+            "name": "NineManga",
+            "language": "fr",
+            "homeUrl": "https://fr.niadd.com"
+          }
+        ]
+      },
+      {
+        "name": "Emperor Scan (Deus)",
+        "packageName": "eu.kanade.tachiyomi.extension.es.emperorscan",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.emperorscan-v1.6.71.apk",
+          "iconUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/deus/src/es/emperorscan/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.emperorscan-v1.6.71.jar"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "106071",
+        "versionName": "1.6.71",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "4562754350961964148",
+            "name": "Emperor Scan",
+            "language": "es",
+            "homeUrl": "https://imperiomanhua.com"
+          }
+        ]
+      },
+      {
+        "name": "LeerCapitulo (Deus)",
+        "packageName": "eu.kanade.tachiyomi.extension.es.leercapitulo",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.leercapitulo-v1.6.1.apk",
+          "iconUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/deus/src/es/leercapitulo/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.leercapitulo-v1.6.1.jar"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "106001",
+        "versionName": "1.6.1",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "5621901596522308538",
+            "name": "LeerCapitulo",
+            "language": "es",
+            "homeUrl": "https://www.leercapitulo.co"
+          }
+        ]
+      },
+      {
+        "name": "Manga Crab (Deus)",
+        "packageName": "eu.kanade.tachiyomi.extension.es.mangacrab",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.mangacrab-v1.6.26.apk",
+          "iconUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/deus/src/es/mangacrab/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.mangacrab-v1.6.26.jar"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "106026",
+        "versionName": "1.6.26",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "6167683270485370369",
+            "name": "Manga Crab",
+            "language": "es",
+            "homeUrl": "https://es.mangacrab.org"
+          }
+        ]
+      },
+      {
+        "name": "Olympus Scanlation (Deus)",
+        "packageName": "eu.kanade.tachiyomi.extension.es.olympusscanlation",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.olympusscanlation-v1.6.1.apk",
+          "iconUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/deus/src/es/olympusscanlation/res/mipmap-xhdpi/ic_launcher.png",
+          "jarUrl": "https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/apk/tachiyomi-es.olympusscanlation-v1.6.1.jar"
+        },
+        "extensionLib": "1.6",
+        "versionCode": "106001",
+        "versionName": "1.6.1",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "1596411039134168890",
+            "name": "Olympus Scanlation",
+            "language": "es",
+            "homeUrl": "https://olympusxyz.com"
+          },
+          {
+            "id": "1163124599525658616",
+            "name": "Olympus Scanlation (antigua)",
+            "language": "es",
+            "homeUrl": "https://olympusxyz.com"
+          }
+        ]
+      }
+    ]
+  }
+}
