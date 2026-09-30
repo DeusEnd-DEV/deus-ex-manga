@@ -134,6 +134,7 @@ abstract class MangaCrab : KeiSource() {
         fetchChapters: Boolean,
     ): SMangaUpdate = coroutineScope {
         val slug = manga.url
+            .removePrefix("/inicio")
             .removePrefix("/series/")
             .removeSuffix("/")
             .substringBefore("/")

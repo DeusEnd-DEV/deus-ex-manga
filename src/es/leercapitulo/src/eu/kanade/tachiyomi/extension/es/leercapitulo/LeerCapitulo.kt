@@ -102,8 +102,32 @@ abstract class LeerCapitulo : KeiSource() {
         fetchDetails: Boolean,
         fetchChapters: Boolean,
     ): SMangaUpdate {
-        val document = client.get(baseUrl + manga.url).asJsoup()
-        return SMangaUpdate(document.mangaDetails(), document.chapterList())
+        val response = client.get(baseUrl + manga.url, ensureSuccess = false)
+        val (document, path) = when {
+            response.code == 404 -> {
+                response.close()
+                val current = findCurrentPath(manga.url)
+                client.get(baseUrl + current).asJsoup() to current
+            }
+            response.isSuccessful -> response.asJsoup() to response.request.url.encodedPath
+            else -> {
+                response.close()
+                throw Exception("HTTP error ${response.code}")
+            }
+        }
+        val details = document.mangaDetails()
+        if (path != manga.url) details.url = path
+        return SMangaUpdate(details, document.chapterList())
+    }
+
+    // Library entries saved before the redesign (`/manga/<slug>/`) now 404; the site uses `/manga/<id>/<slug>/`.
+    private suspend fun findCurrentPath(oldPath: String): String {
+        val slug = oldPath.trimEnd('/').substringAfterLast('/')
+        val url = "$baseUrl/manga/".toHttpUrl().newBuilder().addQueryParameter("q", slug.replace('-', ' ')).build()
+        return client.get(url).asJsoup().select("article.lc-card a.lc-card-name")
+            .map { it.absUrl("href").toHttpUrl().encodedPath }
+            .firstOrNull { it.trimEnd('/').substringAfterLast('/') == slug }
+            ?: throw Exception("Manga no encontrado; puede haber sido eliminado del sitio")
     }
 
     private fun Document.mangaDetails() = SManga.create().apply {

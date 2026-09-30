@@ -3,3 +3,4 @@
 # es/barmanga
 es/leercapitulo
 all/ninemanga
+es/mangacrab
