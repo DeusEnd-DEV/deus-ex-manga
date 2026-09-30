@@ -12,13 +12,13 @@ val niaddVersionCode = Regex("""versionCode\s*=\s*(\d+)""")
     .find(file("../niadd/build.gradle.kts").readText())!!.groupValues[1].toInt()
 
 // Súbelo en 1 con cada cambio propio de este módulo; los cambios de Niadd suman solos.
-val ownRevision = 1
+val ownRevision = 2
 
 keiyoushi {
     name = "NineManga"
     versionCode = 1000 * ownRevision + niaddVersionCode
     contentWarning = ContentWarning.MIXED
-    libVersion = "1.4"
+    libVersion = "1.6"
 
     // IDs de la antigua NineManga: MD5 de "ninemanga<xx>/<idioma>/1", salvo pt-BR, que era fijo.
     source {
