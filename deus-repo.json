@@ -4,6 +4,9 @@
   "nameSuffix": " (Deus)",
   "signingKey": "943d4841ab0fb65e9fcf3271e204fd4487149e703f227de2972cc69601f3c2f2",
   "legacyIds": {
+    "eu.kanade.tachiyomi.extension.es.olympusscanlation": [
+      "1163124599525658616"
+    ],
     "eu.kanade.tachiyomi.extension.all.ninemanga": [
       "120391793502126753",
       "4097111295486074350",

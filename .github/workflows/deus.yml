@@ -85,7 +85,7 @@ jobs:
         if: failure()
         run: |
           if [ -f build.log ]; then
-            msg=$(grep -E "^e: |What went wrong|error:" -A2 build.log | head -40 | sed "s/%/%25/g" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/%0A/g')
+            msg=$(grep -E "^e: |What went wrong|error:" -A30 build.log | head -120 | sed "s/%/%25/g" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/%0A/g')
             echo "::error title=Errores de compilación::$msg"
           fi
 

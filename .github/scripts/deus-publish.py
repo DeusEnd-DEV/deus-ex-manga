@@ -58,7 +58,10 @@ def check_ids(extensions: list) -> None:
     legacy = {pkg: {int(i) for i in ids} for pkg, ids in CONFIG.get("legacyIds", {}).items()}
     errors = []
     for ext in extensions:
-        expected = upstream.get(ext.packageName) or legacy.get(ext.packageName)
+        expected = upstream.get(ext.packageName)
+        extra = legacy.get(ext.packageName)
+        if extra is not None:
+            expected = (expected or set()) | extra
         ids = {s.id for s in ext.sources}
         if expected is not None and ids != expected:
             errors.append(f"{ext.name}: IDs {sorted(ids)} != Keiyoushi {sorted(expected)}")
