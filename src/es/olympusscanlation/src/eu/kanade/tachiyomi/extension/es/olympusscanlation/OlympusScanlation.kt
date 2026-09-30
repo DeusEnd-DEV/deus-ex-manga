@@ -24,6 +24,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.SerializationException
+import java.text.Normalizer
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import kotlin.time.Duration.Companion.seconds
@@ -47,6 +48,20 @@ abstract class OlympusScanlation :
             return
         }
     }
+
+    // Fuente con el ID de la versión 2, cuyos mangas se guardaron como /series/comic-<slug>: se enlazan por slug o título.
+    private val legacy get() = id == LEGACY_ID
+
+    private fun List<MangaDto>.findLegacy(manga: SManga): MangaDto? {
+        val slug = manga.url.substringAfterLast("/").removePrefix("comic-")
+        val title = manga.title.normalized()
+        return firstOrNull { it.slug.replace(TIMESTAMP_SUFFIX, "") == slug } ?: firstOrNull { it.name.normalized() == title }
+    }
+
+    private fun resolveLegacy(manga: SManga) = seriesList.findLegacy(manga)
+        ?: throw Exception("No se encontró \"${manga.title}\" en Olympus; migra el manga a mano")
+
+    private fun String.normalized() = Normalizer.normalize(this, Normalizer.Form.NFD).lowercase().filter { it.isLetterOrDigit() && it.code < 128 }
 
     private val apiBaseUrl get() = baseUrl.replace("https://", "https://panel.")
 
@@ -86,6 +101,7 @@ abstract class OlympusScanlation :
     }
 
     override suspend fun getPopularManga(page: Int): MangasPage {
+        if (legacy) return MangasPage(emptyList(), false)
         fetchSeriesList()
         val result = client.get("$baseUrl/api/rankings?page=$page&period=total_ranking").parseAs<RankingDto>()
         val slugMap = preferences.slugMap.toMutableMap()
@@ -100,6 +116,7 @@ abstract class OlympusScanlation :
     }
 
     override suspend fun getLatestUpdates(page: Int): MangasPage {
+        if (legacy) return MangasPage(emptyList(), false)
         fetchSeriesList()
         val result = client.get("$baseUrl/api/new-chapters?page=$page").parseAs<NewChaptersDto>()
         val slugMap = preferences.slugMap.toMutableMap()
@@ -113,6 +130,7 @@ abstract class OlympusScanlation :
     }
 
     override suspend fun getSearchMangaList(page: Int, query: String, filters: FilterList): MangasPage {
+        if (legacy) return MangasPage(emptyList(), false)
         fetchSeriesList()
         val filteredList = seriesList.filter { it.name.contains(query, ignoreCase = true) }
         val paginatedList = filteredList.drop((page - 1) * 20).take(20)
@@ -121,6 +139,7 @@ abstract class OlympusScanlation :
     }
 
     override fun getMangaUrl(manga: SManga): String {
+        if (legacy) return baseUrl + "/series/comic-" + (seriesList.findLegacy(manga)?.slug ?: manga.url.substringAfterLast("/").removePrefix("comic-"))
         val slug = preferences.slugMap[manga.url.toInt()]!!
         return "$baseUrl/series/comic-$slug"
     }
@@ -132,7 +151,7 @@ abstract class OlympusScanlation :
         fetchChapters: Boolean,
     ): SMangaUpdate {
         fetchSeriesList()
-        val mangaId = manga.url
+        val mangaId = if (legacy) resolveLegacy(manga).id.toString() else manga.url
         val slug = preferences.slugMap[mangaId.toInt()]!!
 
         return coroutineScope {
@@ -147,7 +166,7 @@ abstract class OlympusScanlation :
             val chapterList = async {
                 if (fetchChapters) fetchChapterList(slug, mangaId) else chapters
             }
-            SMangaUpdate(details.await(), chapterList.await())
+            SMangaUpdate(details.await().also { if (legacy) it.url = manga.url }, chapterList.await())
         }
     }
 
@@ -167,6 +186,7 @@ abstract class OlympusScanlation :
         .parseAs<PayloadChapterDto>()
 
     override fun getChapterUrl(chapter: SChapter): String {
+        check(CHAPTER_URL.matches(chapter.url)) { "Actualiza la lista de capítulos" }
         val mangaId = chapter.url.substringBefore("/")
         val chapterId = chapter.url.substringAfter("/")
         val mangaSlug = preferences.slugMap[mangaId.toInt()]!!
@@ -174,6 +194,7 @@ abstract class OlympusScanlation :
     }
 
     override suspend fun getPageList(chapter: SChapter): List<Page> {
+        check(CHAPTER_URL.matches(chapter.url)) { "Actualiza la lista de capítulos" }
         val mangaId = chapter.url.substringBefore("/")
         val chapterId = chapter.url.substringAfter("/")
         val mangaSlug = preferences.slugMap[mangaId.toInt()]!!
@@ -217,6 +238,10 @@ abstract class OlympusScanlation :
         private const val FETCH_DOMAIN_PREF = "fetchDomain"
 
         private const val SLUG_MAP = "slugMap"
+
+        private const val LEGACY_ID = 1163124599525658616L
+        private val TIMESTAMP_SUFFIX = Regex("""-\d{8}-\d{9}$""")
+        private val CHAPTER_URL = Regex("""\d+/\d+""")
 
         private const val CACHE_DURATION_MS = 60 * 60 * 1000L // 1 hour
     }

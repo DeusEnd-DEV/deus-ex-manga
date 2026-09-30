@@ -4,3 +4,4 @@
 es/leercapitulo
 all/ninemanga
 es/mangacrab
+es/olympusscanlation

@@ -6,7 +6,7 @@ plugins {
 
 keiyoushi {
     name = "Olympus Scanlation"
-    versionCode = 0
+    versionCode = 1
     contentWarning = ContentWarning.SAFE
     libVersion = "1.6"
 
@@ -16,5 +16,15 @@ keiyoushi {
             custom("https://olympusxyz.com")
         }
         versionId = 3
+    }
+
+    // Versión 2 de la fuente: solo para bibliotecas antiguas, enlaza cada manga con el actual.
+    source {
+        name = "Olympus Scanlation (antigua)"
+        lang = "es"
+        baseUrl {
+            custom("https://olympusxyz.com")
+        }
+        id = 1163124599525658616L
     }
 }
