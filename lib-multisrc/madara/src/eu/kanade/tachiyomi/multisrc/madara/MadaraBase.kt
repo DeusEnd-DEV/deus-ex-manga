@@ -183,17 +183,19 @@ abstract class MadaraBase : KeiSource() {
 
     private suspend fun getDetailsResponse(manga: SManga): Response {
         var id = mangaId(manga)
+        var failedCode: Int? = null
         val path = memoPath(manga) ?: manga.url.takeIf { !it.all(Char::isDigit) }
         if (path != null) {
             val requestedUrl = baseUrl.toHttpUrl().resolve(path) ?: error("Invalid manga path")
             val response = client.get(requestedUrl, ensureSuccess = false)
             if (response.isSuccessful && response.request.url == requestedUrl) return response
+            failedCode = response.code.takeUnless { response.isSuccessful }
             val redirectedId = response.use { fallback ->
                 if (id == null) fallback.asJsoup().mangaId() else null
             }
             id = id ?: redirectedId
         }
-        return client.get("$baseUrl/?p=${id ?: error("Missing Madara post ID")}")
+        return client.get("$baseUrl/?p=${id ?: error(failedCode?.let { "HTTP error $it" } ?: "Missing Madara post ID")}")
     }
 
     protected open fun parseDetails(document: Document, id: String, preserveUrl: String?): SManga = SManga.create().apply {
