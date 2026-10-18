@@ -6,7 +6,6 @@ plugins {
 
 keiyoushi {
     name = "Emperor Scan"
-    // Was 71 while built on the Madara theme; must not go below it.
     versionCode = 72
     contentWarning = ContentWarning.MIXED
     libVersion = "1.6"

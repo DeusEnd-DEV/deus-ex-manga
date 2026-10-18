@@ -6,7 +6,7 @@ plugins {
 
 keiyoushi {
     name = "OrckuMangas"
-    versionCode = 0
+    versionCode = 3
     contentWarning = ContentWarning.NSFW
     libVersion = "1.6"
 
