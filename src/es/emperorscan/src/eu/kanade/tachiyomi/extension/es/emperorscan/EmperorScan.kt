@@ -35,6 +35,7 @@ import org.jsoup.nodes.Document
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class EmperorScan :
@@ -43,7 +44,7 @@ abstract class EmperorScan :
 
     private val baseHttpUrl get() = baseUrl.toHttpUrl()
 
-    override fun OkHttpClient.Builder.configureClient() = rateLimit(2) { it.host == baseHttpUrl.host }
+    override fun OkHttpClient.Builder.configureClient() = rateLimit(1, 3.seconds) { it.host == baseHttpUrl.host }
 
     override suspend fun getPopularManga(page: Int) = library(page, "vistas", null)
 
