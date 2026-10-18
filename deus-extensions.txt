@@ -6,3 +6,4 @@ all/ninemanga
 es/mangacrab
 es/olympusscanlation
 es/emperorscan
+es/manhwaweb
