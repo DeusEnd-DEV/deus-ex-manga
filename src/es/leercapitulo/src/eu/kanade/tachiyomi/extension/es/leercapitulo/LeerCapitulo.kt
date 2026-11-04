@@ -22,11 +22,25 @@ import okhttp3.OkHttpClient
 import org.jsoup.nodes.Document
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.seconds
 
 @Source
 abstract class LeerCapitulo : KeiSource() {
+    // The image host often needs 20+ s to serve a chapter that isn't cached yet and sometimes answers 520/525.
     override fun OkHttpClient.Builder.configureClient() = rateLimit(2, 1.seconds) { it.host == baseUrl.toHttpUrl().host }
+        .readTimeout(90, TimeUnit.SECONDS)
+        .addInterceptor { chain ->
+            val request = chain.request()
+            var response = chain.proceed(request)
+            var retries = 0
+            while (response.code in 520..525 && request.url.host != baseUrl.toHttpUrl().host && retries < 2) {
+                response.close()
+                retries++
+                response = chain.proceed(request)
+            }
+            response
+        }
 
     override suspend fun getPopularManga(page: Int): MangasPage {
         val mangas = client.get(baseUrl, Fetch.DOCUMENT).asJsoup().select(".lc-slide").map { element ->
