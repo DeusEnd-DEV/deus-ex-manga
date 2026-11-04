@@ -20,7 +20,8 @@ abstract class BarManga : Madara() {
     override val mangaDetailsSelectorTitle = ".breadcrumb > li:last-child > a"
 
     override fun parsePages(document: Document): List<Page> {
-        val script = document.selectFirst(".manga-reader-container + script")?.data() ?: return super.parsePages(document)
+        val script = document.selectFirst(".manga-reader-container + script")?.data()
+            ?: return super.parsePages(document).filterNot { it.imageUrl.orEmpty().startsWith("data:") }
         val tokens = PAGE_TOKENS_REGEX.find(script)?.groupValues?.last()?.parseAs<Map<String, String>>() ?: return emptyList()
         val nonce = NONCE_REGEX.find(script)?.groupValues?.last() ?: return emptyList()
         val action = ACTION_REGEX.find(script)?.groupValues?.last() ?: return emptyList()
