@@ -96,7 +96,8 @@ jobs:
       - name: Generar índice
         if: steps.list.outputs.tasks != ''
         run: |
-          pip install protobuf
+          # index_pb2.py was generated with protobuf 7.35.1; the runner image ships an older one.
+          pip install --upgrade "protobuf>=7.35.1,<8"
           python3 .github/scripts/deus-publish.py "$RUNNER_TEMP/repo"
 
       - name: Publicar rama repo
