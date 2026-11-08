@@ -13,7 +13,7 @@ no reportes a Keiyoushi los fallos de estas extensiones.
 2. Pega esta URL:
 
    ```
-   https://github.com/DeusEnd-DEV/deus-ex-manga/raw/repo/index.pb
+   https://raw.githubusercontent.com/DeusEnd-DEV/deus-ex-manga/repo/index.pb
    ```
 
 3. En **Explorar → Extensiones** aparecerán las extensiones de este repo con la etiqueta `DEUS`.
